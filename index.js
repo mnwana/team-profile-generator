@@ -1,6 +1,7 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 const { Employee, Intern, Manager, Engineer } = require("./lib/classes");
+const generateHtml = require('./lib/generateHTML');
 
 const promptUser = function (employeeArr) {
   if (!employeeArr) {
@@ -35,7 +36,7 @@ const promptUser = function (employeeArr) {
         name: "role",
         type: "list",
         message: "What is this employee's role?",
-        choices: ["Manager", "Engineer", "Intern"],
+        choices: ["Manager", "Engineer", "Intern", "Other"],
       },
       {
         name: "office",
@@ -87,16 +88,32 @@ const constructEmployee = function (empObj) {
     return new Engineer(empObj.name, empObj.id, empObj.email, empObj.github);
   } else if (empObj.role == "Intern") {
     return new Intern(empObj.name, empObj.id, empObj.email, empObj.school);
-  } else if (empObj.role == "Employee") {
+  } else {
     return new Employee(empObj.name, empObj.id, empObj.email);
   }
-  return;
 };
+
+//function to file destination with file content as pameters
+function writeFile(destination, fileData) {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(destination, fileData, (err) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve({
+          ok: true,
+          message: "File saved!",
+        });
+      });
+    });
+  }
 
 const init = function () {
   promptUser().then((employees) => {
     console.log(employees);
-  });
+    return generateHtml(employees);
+  }).then( (htmlData) => { return writeFile('index.html',htmlData)});
 };
 
 init();
