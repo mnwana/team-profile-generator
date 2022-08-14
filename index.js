@@ -8,9 +8,9 @@ const promptUser = function (employeeArr) {
   return inquirer
     .prompt([
       {
-        name: name,
+        name: "name",
         message: "What is the employee's name?",
-        type: input,
+        type: "input",
         validate: (nameInput) => {
           if (nameInput) {
             return true;
@@ -20,11 +20,16 @@ const promptUser = function (employeeArr) {
           }
         },
       },
+      {
+        name: "confirmAdd",
+        message: "Would you like to add another employee?",
+        type: "confirm",
+      }
     ])
     .then((employeeData) => {
       employeeArr.push(employeeData);
       if (employeeData.confirmAdd) {
-        promptUser(employeeArr);
+        return promptUser(employeeArr);
       } else {
         return employeeArr;
       }
@@ -32,8 +37,8 @@ const promptUser = function (employeeArr) {
 };
 
 const init = function () {
-  promptUser().then((employeeData) => {
-    console.log(employeeData);
+  promptUser().then((employees) => {
+    console.log(employees);
   });
 };
 
