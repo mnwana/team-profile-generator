@@ -1,7 +1,7 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 const { Employee, Intern, Manager, Engineer } = require("./lib/classes");
-const generateHtml = require('./lib/generateHTML');
+const generateHtml = require("./lib/generateHTML");
 
 const promptUser = function (employeeArr) {
   if (!employeeArr) {
@@ -95,25 +95,43 @@ const constructEmployee = function (empObj) {
 
 //function to file destination with file content as pameters
 function writeFile(destination, fileData) {
-    return new Promise((resolve, reject) => {
-      fs.writeFile(destination, fileData, (err) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve({
-          ok: true,
-          message: "File saved!",
-        });
+  return new Promise((resolve, reject) => {
+    fs.writeFile(destination, fileData, (err) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve({
+        ok: true,
+        message: "File saved!",
       });
     });
-  }
+  });
+}
 
 const init = function () {
-  promptUser().then((employees) => {
-    console.log(employees);
-    return generateHtml(employees);
-  }).then( (htmlData) => { return writeFile('index.html',htmlData)});
+if(process.argv[2]== 'mock'){
+    console.log(mockData);
+    return writeFile("index.html", generateHtml(mockData));
+}
+    else {
+
+  promptUser()
+    .then((employees) => {
+      console.log(employees);
+      return generateHtml(employees);
+    })
+    .then((htmlData) => {
+      return writeFile("index.html", htmlData);
+    });
+}
 };
+
+const mockData = [
+  new Manager("Marielle", "1", "mnwana@gmail.com", "1"),
+  new Intern("Molly", "2", "molly@cat.com", "Meowniversity of Catty"),
+  new Engineer("Will", "3", "willy@gmail.com", "willy123"),
+  new Employee("Nacho", "4", "nachomama@gmail.com"),
+];
 
 init();
