@@ -110,21 +110,19 @@ function writeFile(destination, fileData) {
 }
 
 const init = function () {
-if(process.argv[2]== 'mock'){
-    console.log(mockData);
+  if (process.argv[2] == "mock") {
+    // console.log(mockData);
     return writeFile("index.html", generateHtml(mockData));
-}
-    else {
-
-  promptUser()
-    .then((employees) => {
-      console.log(employees);
-      return generateHtml(employees);
-    })
-    .then((htmlData) => {
-      return writeFile("index.html", htmlData);
-    });
-}
+  } else {
+    promptUser()
+      .then((employees) => {
+        // console.log(employees);
+        return generateHtml(employees);
+      })
+      .then((htmlData) => {
+        return writeFile("index.html", htmlData);
+      });
+  }
 };
 
 const mockData = [
