@@ -1,5 +1,6 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
+const { Employee, Intern, Manager, Engineer } = require("./lib/classes");
 
 const promptUser = function (employeeArr) {
   if (!employeeArr) {
@@ -37,7 +38,7 @@ const promptUser = function (employeeArr) {
         choices: ["Manager", "Engineer", "Intern"],
       },
       {
-        name: "officeNumber",
+        name: "office",
         type: "input",
         message: "What is this Manager's office number?",
         when: ({ role }) => {
@@ -70,13 +71,26 @@ const promptUser = function (employeeArr) {
       },
     ])
     .then((employeeData) => {
-      employeeArr.push(employeeData);
+      employeeArr.push(constructEmployee(employeeData));
       if (employeeData.confirmAdd) {
         return promptUser(employeeArr);
       } else {
         return employeeArr;
       }
     });
+};
+
+const constructEmployee = function (empObj) {
+  if (empObj.role == "Manager") {
+    return new Manager(empObj.name, empObj.id, empObj.email, empObj.office);
+  } else if (empObj.role == "Engineer") {
+    return new Engineer(empObj.name, empObj.id, empObj.email, empObj.github);
+  } else if (empObj.role == "Intern") {
+    return new Intern(empObj.name, empObj.id, empObj.email, empObj.school);
+  } else if (empObj.role == "Employee") {
+    return new Employee(empObj.name, empObj.id, empObj.email);
+  }
+  return;
 };
 
 const init = function () {
