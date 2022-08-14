@@ -21,10 +21,53 @@ const promptUser = function (employeeArr) {
         },
       },
       {
+        name: "id",
+        type: "input",
+        message: "What is this employee's ID?",
+      },
+      {
+        name: "email",
+        type: "input",
+        message: "What is this employee's email address?",
+      },
+      {
+        name: "role",
+        type: "list",
+        message: "What is this employee's role?",
+        choices: ["Manager", "Engineer", "Intern"],
+      },
+      {
+        name: "officeNumber",
+        type: "input",
+        message: "What is this Manager's office number?",
+        when: ({ role }) => {
+          return role == "Manager";
+        },
+      },
+
+      {
+        name: "github",
+        type: "input",
+        message: "What is this Engineer's GitHub username?",
+        when: ({ role }) => {
+          return role == "Engineer";
+        },
+      },
+
+      {
+        name: "school",
+        type: "input",
+        message: "What is this Intern's school name?",
+        when: ({ role }) => {
+          return role == "Intern";
+        },
+      },
+
+      {
         name: "confirmAdd",
         message: "Would you like to add another employee?",
         type: "confirm",
-      }
+      },
     ])
     .then((employeeData) => {
       employeeArr.push(employeeData);
