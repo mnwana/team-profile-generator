@@ -268,7 +268,7 @@ const init = function () {
     employees.managers = [
       new Manager("Marielle", "1", "mnwana@gmail.com", "1"),
     ];
-    employes.interns = [
+    employees.interns = [
       new Intern("Molly", "2", "molly@cat.com", "Meowniversity of Catty"),
     ];
     employees.engineers = [
