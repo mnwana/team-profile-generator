@@ -118,18 +118,19 @@ const promptManager = function () {
         type: "input",
         message: "What is this Manager's office number?",
       },
-
       {
-        name: "confirmAdd",
-        message: "Would you like to add another Manager?",
-        type: "confirm",
-        default: false,
+        name: "addEmployee",
+        message: "What would you like to do next?",
+        type: "list",
+        choices: ["Add Engineer", "Add Intern", "Complete Team"],
       },
     ])
     .then((employeeData) => {
       employees.managers.push(constructEmployee(employeeData, "Manager"));
-      if (employeeData.confirmAdd) {
-        return promptManager();
+      if (employeeData.addEmployee == "Add Engineer") {
+        return promptEngineer();
+      } else if (employeeData.addEmployee == "Add Intern") {
+        return promptIntern();
       } else {
         return;
       }
@@ -169,16 +170,18 @@ const promptEngineer = function () {
         message: "What is this Engineer's GitHub username?",
       },
       {
-        name: "confirmAdd",
-        message: "Would you like to add another engineer?",
-        type: "confirm",
-        default: false,
+        name: "addEmployee",
+        message: "What would you like to do next?",
+        type: "list",
+        choices: ["Add Engineer", "Add Intern", "Complete Team"],
       },
     ])
     .then((employeeData) => {
       employees.engineers.push(constructEmployee(employeeData, "Engineer"));
-      if (employeeData.confirmAdd) {
+      if (employeeData.addEmployee == "Add Engineer") {
         return promptEngineer();
+      } else if (employeeData.addEmployee == "Add Intern") {
+        return promptIntern();
       } else {
         return;
       }
@@ -220,14 +223,17 @@ const promptIntern = function () {
       },
 
       {
-        name: "confirmAdd",
-        message: "Would you like to add another intern?",
-        type: "confirm",
+        name: "addEmployee",
+        message: "What would you like to do next?",
+        type: "list",
+        choices: ["Add Engineer", "Add Intern", "Complete Team"],
       },
     ])
     .then((employeeData) => {
       employees.interns.push(constructEmployee(employeeData, "Intern"));
-      if (employeeData.confirmAdd) {
+      if (employeeData.addEmployee == "Add Engineer") {
+        return promptEngineer();
+      } else if (employeeData.addEmployee == "Add Intern") {
         return promptIntern();
       } else {
         return;
@@ -274,18 +280,14 @@ const init = function () {
     employees.engineers = [
       new Engineer("Will", "3", "willy@gmail.com", "willy123"),
     ];
-    return writeFile("index.html", generateHtml(employees));
+    return writeFile("./dist/index.html", generateHtml(employees));
   } else {
     promptManager()
-      .then(promptEngineer)
-      .then(promptIntern)
       .then(() => {
-        console.log(employees);
-        console.log(generateHtml(employees));
         return generateHtml(employees);
       })
       .then((htmlData) => {
-        return writeFile("index.html", htmlData);
+        return writeFile("./dist/index.html", htmlData);
       });
   }
 };
