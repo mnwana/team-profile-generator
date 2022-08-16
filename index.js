@@ -281,7 +281,8 @@ const init = function () {
       .then(promptIntern)
       .then(() => {
         console.log(employees);
-        generateHtml(employees);
+        console.log(generateHtml(employees));
+        return generateHtml(employees);
       })
       .then((htmlData) => {
         return writeFile("index.html", htmlData);
