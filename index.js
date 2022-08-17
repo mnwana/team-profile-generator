@@ -11,84 +11,6 @@ const employees = {
   interns: [],
 };
 
-const promptUser = function (employeeArr) {
-  if (!employeeArr) {
-    employeeArr = [];
-  }
-  return inquirer
-    .prompt([
-      {
-        name: "name",
-        message: "What is the employee's name?",
-        type: "input",
-        validate: (nameInput) => {
-          if (nameInput) {
-            return true;
-          } else {
-            console.log("Please enter a name.");
-            return false;
-          }
-        },
-      },
-      {
-        name: "id",
-        type: "input",
-        message: "What is this employee's ID?",
-      },
-      {
-        name: "email",
-        type: "input",
-        message: "What is this employee's email address?",
-      },
-      {
-        name: "role",
-        type: "list",
-        message: "What is this employee's role?",
-        choices: ["Manager", "Engineer", "Intern", "Other"],
-      },
-      {
-        name: "office",
-        type: "input",
-        message: "What is this Manager's office number?",
-        when: ({ role }) => {
-          return role == "Manager";
-        },
-      },
-
-      {
-        name: "github",
-        type: "input",
-        message: "What is this Engineer's GitHub username?",
-        when: ({ role }) => {
-          return role == "Engineer";
-        },
-      },
-
-      {
-        name: "school",
-        type: "input",
-        message: "What is this Intern's school name?",
-        when: ({ role }) => {
-          return role == "Intern";
-        },
-      },
-
-      {
-        name: "confirmAdd",
-        message: "Would you like to add another employee?",
-        type: "confirm",
-      },
-    ])
-    .then((employeeData) => {
-      employeeArr.push(constructEmployee(employeeData, employeeData.role));
-      if (employeeData.confirmAdd) {
-        return promptUser(employeeArr);
-      } else {
-        return employeeArr;
-      }
-    });
-};
-
 const promptManager = function () {
   return inquirer
     .prompt([
@@ -96,8 +18,8 @@ const promptManager = function () {
         name: "name",
         message: "What is this Managers's name?",
         type: "input",
-        validate: (nameInput) => {
-          if (nameInput) {
+        validate: (input) => {
+          if (input) {
             return true;
           } else {
             console.log("Please enter a name.");
@@ -109,16 +31,40 @@ const promptManager = function () {
         name: "id",
         type: "input",
         message: "What is this manager's ID?",
+        validate: (input) => {
+          if (input) {
+            return true;
+          } else {
+            console.log("Please enter an ID.");
+            return false;
+          }
+        },
       },
       {
         name: "email",
         type: "input",
         message: "What is this manager's email address?",
+        validate: (input) => {
+          if (input) {
+            return true;
+          } else {
+            console.log("Please enter an email.");
+            return false;
+          }
+        },
       },
       {
         name: "office",
         type: "input",
         message: "What is this Manager's office number?",
+        validate: (input) => {
+          if (input) {
+            return true;
+          } else {
+            console.log("Please enter an office number.");
+            return false;
+          }
+        },
       },
       {
         name: "addEmployee",
@@ -146,8 +92,8 @@ const promptEngineer = function () {
         name: "name",
         message: "What is the engineers's name?",
         type: "input",
-        validate: (nameInput) => {
-          if (nameInput) {
+        validate: (input) => {
+          if (input) {
             return true;
           } else {
             console.log("Please enter a name.");
@@ -159,17 +105,41 @@ const promptEngineer = function () {
         name: "id",
         type: "input",
         message: "What is this engineer's ID?",
+        validate: (input) => {
+          if (input) {
+            return true;
+          } else {
+            console.log("Please enter an id.");
+            return false;
+          }
+        },
       },
       {
         name: "email",
         type: "input",
         message: "What is this engineer's email address?",
+        validate: (input) => {
+          if (input) {
+            return true;
+          } else {
+            console.log("Please enter an email address.");
+            return false;
+          }
+        },
       },
 
       {
         name: "github",
         type: "input",
         message: "What is this Engineer's GitHub username?",
+        validate: (input) => {
+          if (input) {
+            return true;
+          } else {
+            console.log("Please enter a username.");
+            return false;
+          }
+        },
       },
       {
         name: "addEmployee",
@@ -198,8 +168,8 @@ const promptIntern = function () {
         name: "name",
         message: "What is this intern's name?",
         type: "input",
-        validate: (nameInput) => {
-          if (nameInput) {
+        validate: (input) => {
+          if (input) {
             return true;
           } else {
             console.log("Please enter a name.");
@@ -211,17 +181,41 @@ const promptIntern = function () {
         name: "id",
         type: "input",
         message: "What is this intern's ID?",
+        validate: (input) => {
+          if (input) {
+            return true;
+          } else {
+            console.log("Please enter an id.");
+            return false;
+          }
+        },
       },
       {
         name: "email",
         type: "input",
         message: "What is this intern's email address?",
+        validate: (input) => {
+          if (input) {
+            return true;
+          } else {
+            console.log("Please enter an email address.");
+            return false;
+          }
+        },
       },
 
       {
         name: "school",
         type: "input",
         message: "What is this intern's school name?",
+        validate: (input) => {
+          if (input) {
+            return true;
+          } else {
+            console.log("Please enter a school name.");
+            return false;
+          }
+        },
       },
 
       {
