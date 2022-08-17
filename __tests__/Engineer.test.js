@@ -1,0 +1,17 @@
+const Engineer = require("../lib/Engineer");
+
+test("creates an engineer object using strings", () => {
+  const engineer = new Engineer("Marielle", "1", "marielle@fake.com","mnwana");
+
+  expect(engineer.name).toBe("Marielle");
+  expect(engineer.id).toBe("1");
+  expect(parseInt(engineer.id)).toEqual(expect.any(Number));
+  expect(engineer.email).toBe("marielle@fake.com");
+  expect(engineer.name).toEqual(engineer.getName());
+  expect(engineer.github).toEqual("mnwana");
+  expect(engineer.id).toEqual(engineer.getId());
+  expect(engineer.email).toEqual(engineer.getEmail());
+  expect(engineer.getRole()).toBe("Engineer");
+  expect(engineer.getGithub()).toBe("mnwana");
+  expect(engineer.getGithub()).toEqual(engineer.github);
+});
