@@ -1,16 +1,18 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
-const Engineer = require('./lib/Engineer');
-const Intern = require('./lib/Intern');
-const Manager = require('./lib/Manager');
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
 const generateHtml = require("./lib/generateHTML");
 
+// const to hold employees input by user in designated arrays
 const employees = {
   managers: [],
   engineers: [],
   interns: [],
 };
 
+// prompt user for input about team manager
 const promptManager = function () {
   return inquirer
     .prompt([
@@ -74,17 +76,24 @@ const promptManager = function () {
       },
     ])
     .then((employeeData) => {
+      // construct manager object then push to employees.managers array
       employees.managers.push(constructEmployee(employeeData, "Manager"));
+      // if user chose to add engineer prompt engineer questions
       if (employeeData.addEmployee == "Add Engineer") {
         return promptEngineer();
-      } else if (employeeData.addEmployee == "Add Intern") {
+      }
+      // if user chose to add intern prompt intern questions
+      else if (employeeData.addEmployee == "Add Intern") {
         return promptIntern();
-      } else {
+      }
+      // if neither, end prompt
+      else {
         return;
       }
     });
 };
 
+// prompt user for input on team engineers
 const promptEngineer = function () {
   return inquirer
     .prompt([
@@ -149,17 +158,24 @@ const promptEngineer = function () {
       },
     ])
     .then((employeeData) => {
+      // construct engineer object then push to employees.engineers array
       employees.engineers.push(constructEmployee(employeeData, "Engineer"));
+      // if user chose to add engineer prompt engineer questions
       if (employeeData.addEmployee == "Add Engineer") {
         return promptEngineer();
-      } else if (employeeData.addEmployee == "Add Intern") {
+      }
+      // if user chose to add intern prompt intern questions
+      else if (employeeData.addEmployee == "Add Intern") {
         return promptIntern();
-      } else {
+      }
+      // if neither, end prompt
+      else {
         return;
       }
     });
 };
 
+// prompt user for input on team interns
 const promptIntern = function () {
   console.log("Add Interns");
   return inquirer
@@ -226,17 +242,24 @@ const promptIntern = function () {
       },
     ])
     .then((employeeData) => {
+      // construct intern object then push to employees.interns array
       employees.interns.push(constructEmployee(employeeData, "Intern"));
+      // if user chose to add engineer prompt engineer questions
       if (employeeData.addEmployee == "Add Engineer") {
         return promptEngineer();
-      } else if (employeeData.addEmployee == "Add Intern") {
+      }
+      // if user chose to add intern prompt intern questions
+      else if (employeeData.addEmployee == "Add Intern") {
         return promptIntern();
-      } else {
+      }
+      // if neither, end prompt
+      else {
         return;
       }
     });
 };
 
+// construct an employee object based on employee object & role, employee object if no role included
 const constructEmployee = function (empObj, role) {
   if (role == "Manager") {
     return new Manager(empObj.name, empObj.id, empObj.email, empObj.office);
@@ -265,6 +288,7 @@ function writeFile(destination, fileData) {
   });
 }
 
+// init app -- if mock in argv run with template with mock data, otherwise get user input
 const init = function () {
   if (process.argv[2] == "mock") {
     employees.managers = [
@@ -278,11 +302,14 @@ const init = function () {
     ];
     return writeFile("./dist/index.html", generateHtml(employees));
   } else {
+    // prompt user for team input
     promptManager()
       .then(() => {
+        // generate html for team page based on input
         return generateHtml(employees);
       })
       .then((htmlData) => {
+        // write html file that was generated
         return writeFile("./dist/index.html", htmlData);
       });
   }
